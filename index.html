@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Gesamtschau</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --fg: #e8e8e8;
+      --yellow: #ffe600;
+      --green: #00ff99;
+      --dim: #666;
+      --border: #333;
+      --mono: "IBM Plex Mono", "Courier New", monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 0 1.5rem;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding-bottom: 4rem;
+    }
+
+    /* Top bar */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--dim);
+    }
+
+    .topbar .site-id { color: var(--yellow); letter-spacing: 0.1em; }
+
+    .lang-bar { display: flex; gap: 0; }
+
+    .lang-bar button {
+      background: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--dim);
+      padding: 0.2rem 0.6rem;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    .lang-bar button + button { border-left: none; }
+
+    .lang-bar button.active {
+      background: var(--yellow);
+      color: #000;
+      border-color: var(--yellow);
+    }
+
+    .lang-bar button:not(.active):hover {
+      color: var(--fg);
+      border-color: var(--fg);
+    }
+
+    /* Header */
+    header {
+      padding: 3rem 0 2.5rem;
+      border-bottom: 2px solid var(--yellow);
+    }
+
+    header h1 {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: clamp(2.4rem, 7vw, 4.5rem);
+      line-height: 1;
+      color: var(--yellow);
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    header .tagline {
+      font-size: 0.85rem;
+      color: var(--fg);
+      letter-spacing: 0.02em;
+    }
+
+    /* Sections */
+    section {
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .section-heading {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 700;
+      color: var(--green);
+      letter-spacing: -0.01em;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .section-heading::before {
+      content: "//";
+      color: var(--dim);
+      font-size: 0.6em;
+      font-weight: 400;
+    }
+
+    .body-text {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--fg);
+      margin-bottom: 0.8rem;
+      max-width: 64ch;
+    }
+
+    .note {
+      font-size: 0.75rem;
+      color: var(--dim);
+      margin-bottom: 0;
+    }
+
+    /* Spotify */
+    .spotify-embed {
+      margin: 1.5rem 0 1rem;
+      border: 1px solid var(--border);
+    }
+
+    /* Platform links */
+    .platform-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-top: 1rem;
+    }
+
+    .platform-links a {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--fg);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      padding: 0.35rem 0.75rem;
+      transition: border-color 0.1s, color 0.1s, background 0.1s;
+    }
+
+    .platform-links a:hover {
+      border-color: var(--green);
+      color: var(--green);
+    }
+
+    .platform-links a img {
+      width: 13px;
+      height: 13px;
+      object-fit: contain;
+      filter: grayscale(1) brightness(2);
+    }
+
+    /* Book link */
+    .book-link {
+      display: inline-block;
+      margin-top: 1.4rem;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--yellow);
+      text-decoration: none;
+      border: 1px solid var(--yellow);
+      padding: 0.5rem 1.2rem;
+      letter-spacing: 0.05em;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    .book-link:hover {
+      background: var(--yellow);
+      color: #000;
+    }
+
+    /* Redbubble */
+    .redbubble-embed {
+      margin: 1.5rem 0 1rem;
+      border: 1px solid var(--border);
+    }
+
+    .shop-link {
+      display: inline-block;
+      margin-top: 1.4rem;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--green);
+      text-decoration: none;
+      border: 1px solid var(--green);
+      padding: 0.5rem 1.2rem;
+      letter-spacing: 0.05em;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    .shop-link:hover {
+      background: var(--green);
+      color: #000;
+    }
+
+    /* Support */
+    .support-text {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--fg);
+      margin-bottom: 1.2rem;
+      max-width: 64ch;
+    }
+
+    .support-link {
+      display: inline-block;
+      font-family: var(--mono);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--yellow);
+      text-decoration: none;
+      border: 1px solid var(--yellow);
+      padding: 0.5rem 1.2rem;
+      letter-spacing: 0.05em;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    .support-link:hover {
+      background: var(--yellow);
+      color: #000;
+    }
+
+    /* Contact */
+    .contact-link {
+      font-family: var(--mono);
+      font-size: 0.9rem;
+      color: var(--green);
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+
+    .contact-link:hover { opacity: 0.7; }
+
+    /* Footer */
+    footer {
+      padding-top: 2rem;
+      display: flex;
+      gap: 0.3rem;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--dim);
+    }
+
+    footer a {
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    footer a:hover { color: var(--fg); }
+    footer .sep { color: var(--border); }
+
+    @media (max-width: 480px) {
+      body { padding: 0 1rem; font-size: 13px; }
+      header h1 { font-size: clamp(1.8rem, 10vw, 2.8rem); }
+      .section-heading { font-size: clamp(1.4rem, 8vw, 2rem); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- Top bar -->
+    <div class="topbar">
+      <span class="site-id">THE-GESAMTSCHAU.DE</span>
+      <div class="lang-bar">
+        <button id="btn-de" onclick="setLang('de')">DE</button>
+        <button id="btn-en" onclick="setLang('en')">EN</button>
+        <button id="btn-es" onclick="setLang('es')">ES</button>
+        <button id="btn-pt" onclick="setLang('pt')">PT</button>
+        <button id="btn-fr" onclick="setLang('fr')">FR</button>
+        <button id="btn-ru" onclick="setLang('ru')">RU</button>
+      </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+      <h1>The Gesamtschau</h1>
+      <p class="tagline">
+        <span data-de="Orientierung in der größten Revolution der Menschheitsgeschichte"
+              data-en="Orientation through history's greatest revolution"
+              data-es="Orientación en la mayor revolución de la historia de la humanidad"
+              data-pt="Orientação na maior revolução da história da humanidade"
+              data-fr="Orientation dans la plus grande révolution de l'histoire humaine"
+              data-ru="Ориентация в величайшей революции в истории человечества"></span>
+      </p>
+    </header>
+
+    <!-- Podcast -->
+    <section>
+      <h2 class="section-heading" data-de="PODCAST" data-en="PODCAST" data-es="PODCAST" data-pt="PODCAST" data-fr="PODCAST" data-ru="ПОДКАСТ"></h2>
+      <p class="body-text"
+         data-de="Alexander Markowetz analysiert die digitale Transformation und ihren gesellschaftlichen Wandel. Die anstehende Digitalisierung konstituiert die größte Revolution der Menschheit — bestehende Strukturen aus dem 19. Jahrhundert werden diesen Umbruch nicht überstehen."
+         data-en="Alexander Markowetz analyses digital transformation and its societal consequences. The coming digitalisation constitutes the greatest revolution in human history — existing 19th-century structures will not survive this transformation."
+         data-es="Alexander Markowetz analiza la transformación digital y sus consecuencias sociales. La próxima digitalización constituye la mayor revolución en la historia de la humanidad — las estructuras existentes del siglo XIX no sobrevivirán a esta transformación."
+         data-pt="Alexander Markowetz analisa a transformação digital e as suas consequências sociais. A próxima digitalização constitui a maior revolução da história da humanidade — as estruturas existentes do século XIX não sobreviverão a esta transformação."
+         data-fr="Alexander Markowetz analyse la transformation numérique et ses conséquences sociales. La numérisation à venir constitue la plus grande révolution de l'histoire humaine — les structures existantes du XIXe siècle ne survivront pas à cette transformation."
+         data-ru="Александр Марковец анализирует цифровую трансформацию и её общественные последствия. Грядущая цифровизация — это величайшая революция в истории человечества: существующие структуры XIX века не переживут этого перелома."></p>
+      <div class="spotify-embed" id="podcast-player"
+           data-episode-de="331e3087"
+           data-episode-en="3d70bf73"
+           data-episode-es="f35fc7cd"
+           data-episode-pt="47ad89fb"
+           data-episode-fr="54d9a051"
+           data-episode-ru="98997f7c"></div>
+      <div class="platform-links">
+        <a id="spotify-link" href="https://open.spotify.com/show/4psTvnCyofQGobrBVnlsoS" target="_blank" rel="noopener">
+          <img src="icons/spotify.png" alt="" /> Spotify
+        </a>
+        <a href="https://podcasts.apple.com/us/podcast/the-gesamtschau/id1804452911" target="_blank" rel="noopener">
+          <img src="icons/apple.svg" alt="" /> Apple Podcasts
+        </a>
+        <a id="rss-link" href="https://feeds.transistor.fm/the-gesamtschau" target="_blank" rel="noopener">
+          <img src="icons/rss.png" alt="" /> RSS
+        </a>
+        <a href="https://www.facebook.com/profile.php?id=61574619213572" target="_blank" rel="noopener">
+          <img src="icons/facebook.png" alt="" /> Facebook
+        </a>
+        <a href="https://www.linkedin.com/company/the-gesamtschau/" target="_blank" rel="noopener">
+          <img src="icons/linkedin.png" alt="" /> LinkedIn
+        </a>
+      </div>
+    </section>
+
+    <!-- Book -->
+    <section>
+      <h2 class="section-heading" data-de="BUCH" data-en="BOOK" data-es="LIBRO" data-pt="LIVRO" data-fr="LIVRE" data-ru="КНИГА"></h2>
+      <p class="body-text"
+         data-de="Gesellschaft ist ein Rechenproblem. Menschen koordinieren sich unter begrenzter Kognition in explodierenden sozialen Graphen. »Der topologische Umbruch — Kognition, Koordination, Transformation« entwickelt einen formalen Rahmen für dieses Problem — und zeigt, warum die Digitalisierung es erstmals strukturell auflöst."
+         data-en="Society is a computation problem. Humans coordinate under the constraint of limited cognition in exponentially growing social graphs. »The Topological Rupture — Cognition, Coordination, Transformation« develops a formal framework for this constraint — and shows why digitalisation dissolves it for the first time."
+         data-es="La sociedad es un problema computacional. Los humanos se coordinan bajo la restricción de cognición limitada en grafos sociales que crecen exponencialmente. »The Topological Rupture — Cognition, Coordination, Transformation« desarrolla un marco formal para esta restricción — y muestra por qué la digitalización lo disuelve por primera vez."
+         data-pt="A sociedade é um problema computacional. Os humanos coordenam-se sob a restrição de cognição limitada em grafos sociais que crescem exponencialmente. »The Topological Rupture — Cognition, Coordination, Transformation« desenvolve um quadro formal para esta restrição — e mostra por que a digitalização o dissolve pela primeira vez."
+         data-fr="La société est un problème de calcul. Les humains se coordonnent sous la contrainte d'une cognition limitée dans des graphes sociaux en croissance exponentielle. »The Topological Rupture — Cognition, Coordination, Transformation« développe un cadre formel pour cette contrainte — et montre pourquoi la numérisation la dissout pour la première fois."
+         data-ru="Общество — это вычислительная задача. Люди координируются в условиях ограниченного познания в экспоненциально растущих социальных графах. »The Topological Rupture — Cognition, Coordination, Transformation« разрабатывает формальные рамки для этой проблемы — и показывает, почему цифровизация впервые структурно её разрешает."></p>
+      <p class="note"
+         data-de="Work in progress — diese Seite zeigt stets die aktuellste Version, unregelmäßig aktualisiert."
+         data-en="Work in progress — this page always shows the latest version, updated irregularly."
+         data-es="Work in progress — esta página siempre muestra la versión más reciente, actualizada de forma irregular."
+         data-pt="Work in progress — esta página mostra sempre a versão mais recente, atualizada irregularmente."
+         data-fr="Work in progress — cette page affiche toujours la dernière version, mise à jour irrégulièrement."
+         data-ru="В разработке — на этой странице всегда отображается последняя версия, обновляется нерегулярно."></p>
+      <a class="book-link"
+         href="https://markowetz.github.io/topologische-umbruch/"
+         target="_blank" rel="noopener">
+        <span data-de="→ ZUM BUCH" data-en="→ READ THE BOOK" data-es="→ LEER EL LIBRO" data-pt="→ LER O LIVRO" data-fr="→ LIRE LE LIVRE" data-ru="→ ЧИТАТЬ КНИГУ"></span>
+      </a>
+    </section>
+
+    <!-- Shop -->
+    <section>
+      <h2 class="section-heading" data-de="SHOP" data-en="SHOP" data-es="TIENDA" data-pt="LOJA" data-fr="BOUTIQUE" data-ru="МАГАЗИН"></h2>
+      <p class="body-text"
+         data-de="Merchandise zur Gesamtschau — Designs rund um digitale Transformation, Gesellschaft und Zukunft."
+         data-en="Gesamtschau merchandise — designs around digital transformation, society, and the future."
+         data-es="Merchandising de la Gesamtschau — diseños sobre transformación digital, sociedad y futuro."
+         data-pt="Merchandising da Gesamtschau — designs sobre transformação digital, sociedade e futuro."
+         data-fr="Merchandising de la Gesamtschau — designs autour de la transformation numérique, de la société et de l'avenir."
+         data-ru="Мерч Gesamtschau — дизайны о цифровой трансформации, обществе и будущем."></p>
+      <div class="redbubble-embed">
+        <script type="text/javascript" src="https://www.redbubble.com/assets/external_portfolio.js"></script>
+        <script id="rb-xzfcxvzx" type="text/javascript">new RBExternalPortfolio('www.redbubble.com', 'gesamtschau', 1, 3).renderIframe();</script>
+      </div>
+      <a class="shop-link"
+         href="https://www.redbubble.com/people/gesamtschau/shop"
+         target="_blank" rel="noopener">
+        <span data-de="→ ZUM SHOP" data-en="→ VISIT SHOP" data-es="→ IR A LA TIENDA" data-pt="→ VISITAR LOJA" data-fr="→ VOIR LA BOUTIQUE" data-ru="→ В МАГАЗИН"></span>
+      </a>
+    </section>
+
+    <!-- Support -->
+    <section>
+      <h2 class="section-heading" data-de="UNTERSTÜTZEN" data-en="SUPPORT" data-es="APOYAR" data-pt="APOIAR" data-fr="SOUTENIR" data-ru="ПОДДЕРЖАТЬ"></h2>
+      <p class="support-text"
+         data-de="Die Gesamtschau ist ein unabhängiges Projekt. Wenn Ihnen die Arbeit gefällt, freuen wir uns über Ihre Unterstützung."
+         data-en="The Gesamtschau is an independent project. If you find value in this work, we would greatly appreciate your support."
+         data-es="La Gesamtschau es un proyecto independiente. Si aprecia este trabajo, le agradecemos su apoyo."
+         data-pt="A Gesamtschau é um projeto independente. Se aprecia este trabalho, ficaremos gratos pelo seu apoio."
+         data-fr="La Gesamtschau est un projet indépendant. Si vous appréciez ce travail, nous vous serions reconnaissants de votre soutien."
+         data-ru="Gesamtschau — независимый проект. Если наша работа вам ценна, мы будем признательны за вашу поддержку."></p>
+      <a class="support-link" href="https://www.paypal.me/gesamtschau" target="_blank" rel="noopener">
+        <span data-de="♥ VIA PAYPAL UNTERSTÜTZEN" data-en="♥ SUPPORT VIA PAYPAL" data-es="♥ APOYAR VÍA PAYPAL" data-pt="♥ APOIAR VIA PAYPAL" data-fr="♥ SOUTENIR VIA PAYPAL" data-ru="♥ ПОДДЕРЖАТЬ ЧЕРЕЗ PAYPAL"></span>
+      </a>
+    </section>
+
+    <!-- Contact -->
+    <section>
+      <h2 class="section-heading" data-de="KONTAKT" data-en="CONTACT" data-es="CONTACTO" data-pt="CONTACTO" data-fr="CONTACT" data-ru="КОНТАКТ"></h2>
+      <a class="contact-link" href="mailto:kontakt@markowetz.de">kontakt@markowetz.de</a>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <a href="impressum.html" data-de="Impressum" data-en="Imprint" data-es="Aviso legal" data-pt="Aviso legal" data-fr="Mentions légales" data-ru="Выходные данные"></a>
+      <span class="sep"> · </span>
+      <a href="privacy.html" data-de="Datenschutz" data-en="Privacy" data-es="Privacidad" data-pt="Privacidade" data-fr="Confidentialité" data-ru="Конфиденциальность"></a>
+    </footer>
+
+  </div>
+
+  <script>
+    const LANGS = ['de', 'en', 'es', 'pt', 'fr', 'ru'];
+
+    const SPOTIFY_URLS = {
+      de: 'https://open.spotify.com/show/4psTvnCyofQGobrBVnlsoS',
+      en: 'https://open.spotify.com/show/4b75h5NA9hf4TkVD1nj70S',
+      es: 'https://open.spotify.com/show/2Ld6ZnOmLsIrnY3eUAX757',
+      pt: 'https://open.spotify.com/show/72m5pBQjseOVmjwMUlTs3P',
+      fr: 'https://open.spotify.com/show/08iF6zm2lNQNyYCgpstNtB',
+      ru: 'https://open.spotify.com/show/7A8h2FdB2EFjpqbUhOr96q',
+    };
+
+    const RSS_FEEDS = {
+      de: 'https://feeds.transistor.fm/the-gesamtschau',
+      en: 'https://feeds.transistor.fm/the-gesamtschau-english',
+      es: 'https://feeds.transistor.fm/the-gesamtschau-espanol',
+      pt: 'https://feeds.transistor.fm/the-gesamtschau-portugues',
+      fr: 'https://feeds.transistor.fm/the-gesamtschau-francais',
+      ru: 'https://feeds.transistor.fm/the-gesamtschau-russian',
+    };
+
+    function updatePodcastPlayer(lang) {
+      const player = document.getElementById('podcast-player');
+      if (!player) return;
+      const epId = player.getAttribute('data-episode-' + lang);
+      if (epId) {
+        player.innerHTML = '<iframe src="https://share.transistor.fm/e/' + epId + '" width="100%" height="180" frameborder="0" scrolling="no" seamless="true" loading="lazy"></iframe>';
+      } else {
+        player.innerHTML = '';
+      }
+    }
+
+    function setLang(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll(LANGS.map(l => '[data-' + l + ']').join(',')).forEach(el => {
+        const text = el.getAttribute('data-' + lang);
+        if (text !== null) el.textContent = text;
+      });
+      updatePodcastPlayer(lang);
+      const rssLink = document.getElementById('rss-link');
+      if (rssLink) rssLink.href = RSS_FEEDS[lang];
+      const spotifyLink = document.getElementById('spotify-link');
+      if (spotifyLink) spotifyLink.href = SPOTIFY_URLS[lang];
+      LANGS.forEach(l => {
+        document.getElementById('btn-' + l).classList.toggle('active', l === lang);
+      });
+      localStorage.setItem('gs-lang', lang);
+    }
+
+    const saved = localStorage.getItem('gs-lang') || 'de';
+    setLang(saved);
+  </script>
+</body>
+</html>
