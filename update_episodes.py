@@ -27,12 +27,14 @@ for lang, show_id in SHOWS.items():
     req = urllib.request.Request(url, headers={'x-api-key': API_KEY})
     with urllib.request.urlopen(req) as resp:
         data = json.loads(resp.read())
+    if not data.get('data'):
+        print(f'{lang}: no published episodes yet, skipping')
+        continue
     episode = data['data'][0]
     attrs = episode['attributes']
     # Extract embed src from embed_html (e.g. <iframe src="https://share.transistor.fm/e/abc1234" ...>)
     embed_html = attrs.get('embed_html', '') or attrs.get('embed_html_dark', '')
-    import re as _re
-    match = _re.search(r'src="https://share\.transistor\.fm/e/([^"]+)"', embed_html)
+    match = re.search(r'src="https://share\.transistor\.fm/e/([^"]+)"', embed_html)
     if match:
         token = match.group(1)
     else:
