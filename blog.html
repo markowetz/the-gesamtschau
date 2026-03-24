@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog — The Gesamtschau</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d0d0d;
+      --fg: #e8e8e8;
+      --yellow: #ffe600;
+      --green: #00ff99;
+      --dim: #666;
+      --border: #333;
+      --mono: "IBM Plex Mono", "Courier New", monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.6;
+      padding: 0 1.5rem;
+    }
+
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding-bottom: 4rem;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.75rem;
+      color: var(--dim);
+    }
+
+    .topbar .site-id { color: var(--yellow); letter-spacing: 0.1em; }
+
+    .lang-bar { display: flex; gap: 0; }
+
+    .lang-bar button {
+      background: none;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      font-family: var(--mono);
+      font-size: 0.75rem;
+      color: var(--dim);
+      padding: 0.2rem 0.6rem;
+      transition: background 0.1s, color 0.1s;
+    }
+
+    .lang-bar button + button { border-left: none; }
+
+    .lang-bar button.active {
+      background: var(--yellow);
+      color: #000;
+      border-color: var(--yellow);
+    }
+
+    .lang-bar button:not(.active):hover {
+      color: var(--fg);
+      border-color: var(--fg);
+    }
+
+    header {
+      padding: 3rem 0 2.5rem;
+      border-bottom: 2px solid var(--yellow);
+    }
+
+    header h1 {
+      font-family: var(--mono);
+      font-weight: 700;
+      font-size: clamp(2.4rem, 7vw, 4.5rem);
+      line-height: 1;
+      color: var(--yellow);
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .back-link {
+      font-size: 0.85rem;
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .back-link:hover { color: var(--fg); }
+
+    .post-entry {
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .post-date {
+      font-size: 0.75rem;
+      color: var(--dim);
+      margin-bottom: 0.6rem;
+    }
+
+    .post-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--yellow);
+      margin-bottom: 1rem;
+      line-height: 1.4;
+    }
+
+    .post-body p {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--fg);
+      max-width: 64ch;
+      margin-bottom: 0.8rem;
+    }
+
+    .post-body p:last-child { margin-bottom: 0; }
+
+    .empty-state {
+      padding: 3rem 0;
+      color: var(--dim);
+      font-size: 0.9rem;
+    }
+
+    footer {
+      padding-top: 2rem;
+      display: flex;
+      gap: 0.3rem;
+      align-items: center;
+      font-size: 0.72rem;
+      color: var(--dim);
+    }
+
+    footer a {
+      color: var(--dim);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    footer a:hover { color: var(--fg); }
+    footer .sep { color: var(--border); }
+
+    @media (max-width: 480px) {
+      body { padding: 0 1rem; font-size: 13px; }
+      header h1 { font-size: clamp(1.8rem, 10vw, 2.8rem); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="topbar">
+      <span class="site-id">THE-GESAMTSCHAU.DE</span>
+      <div class="lang-bar">
+        <button id="btn-de" onclick="setLang('de')">DE</button>
+        <button id="btn-en" onclick="setLang('en')">EN</button>
+        <button id="btn-es" onclick="setLang('es')">ES</button>
+        <button id="btn-pt" onclick="setLang('pt')">PT</button>
+        <button id="btn-fr" onclick="setLang('fr')">FR</button>
+        <button id="btn-ru" onclick="setLang('ru')">RU</button>
+      </div>
+    </div>
+
+    <header>
+      <h1 id="blog-heading">BLOG</h1>
+      <a class="back-link" href="index.html">
+        <span data-de="← Zurück zur Startseite"
+              data-en="← Back to home"
+              data-es="← Volver al inicio"
+              data-pt="← Voltar ao início"
+              data-fr="← Retour à l'accueil"
+              data-ru="← На главную"></span>
+      </a>
+    </header>
+
+    <div id="posts-container"></div>
+
+    <footer>
+      <a href="impressum.html" data-de="Impressum" data-en="Imprint" data-es="Aviso legal" data-pt="Aviso legal" data-fr="Mentions légales" data-ru="Выходные данные"></a>
+      <span class="sep"> · </span>
+      <a href="privacy.html" data-de="Datenschutz" data-en="Privacy" data-es="Privacidad" data-pt="Privacidade" data-fr="Confidentialité" data-ru="Конфиденциальность"></a>
+    </footer>
+
+  </div>
+
+  <script>
+    const LANGS = ['de', 'en', 'es', 'pt', 'fr', 'ru'];
+    let allPosts = [];
+    let currentLang = 'de';
+
+    function renderPosts(lang) {
+      const container = document.getElementById('posts-container');
+      container.innerHTML = '';
+
+      if (!allPosts.length) {
+        const empty = document.createElement('div');
+        empty.className = 'empty-state';
+        const msgs = { de: 'Noch keine Beiträge.', en: 'No posts yet.', es: 'Aún no hay entradas.', pt: 'Ainda sem artigos.', fr: 'Aucun article pour l\'instant.', ru: 'Пока нет записей.' };
+        empty.textContent = msgs[lang] || msgs.de;
+        container.appendChild(empty);
+        return;
+      }
+
+      allPosts.forEach(post => {
+        const t = post.translations[lang] || post.translations['de'];
+        const entry = document.createElement('div');
+        entry.className = 'post-entry';
+
+        const dateEl = document.createElement('div');
+        dateEl.className = 'post-date';
+        dateEl.textContent = post.date;
+
+        const titleEl = document.createElement('div');
+        titleEl.className = 'post-title';
+        titleEl.textContent = t.title;
+
+        const bodyEl = document.createElement('div');
+        bodyEl.className = 'post-body';
+        t.body.split(/\n\n+/).forEach(para => {
+          if (para.trim()) {
+            const p = document.createElement('p');
+            p.textContent = para.trim();
+            bodyEl.appendChild(p);
+          }
+        });
+
+        entry.appendChild(dateEl);
+        entry.appendChild(titleEl);
+        entry.appendChild(bodyEl);
+        container.appendChild(entry);
+      });
+    }
+
+    function updateStaticLang(lang) {
+      document.documentElement.lang = lang;
+      document.querySelectorAll(LANGS.map(l => '[data-' + l + ']').join(',')).forEach(el => {
+        const text = el.getAttribute('data-' + lang);
+        if (text !== null) el.textContent = text;
+      });
+      LANGS.forEach(l => {
+        document.getElementById('btn-' + l).classList.toggle('active', l === lang);
+      });
+    }
+
+    function setLang(lang) {
+      currentLang = lang;
+      updateStaticLang(lang);
+      renderPosts(lang);
+      localStorage.setItem('gs-lang', lang);
+    }
+
+    async function init() {
+      try {
+        const res = await fetch('posts.json');
+        allPosts = await res.json();
+      } catch(e) {
+        allPosts = [];
+      }
+      const saved = localStorage.getItem('gs-lang') || 'de';
+      setLang(saved);
+    }
+
+    init();
+  </script>
+</body>
+</html>

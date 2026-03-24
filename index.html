@@ -349,6 +349,17 @@
       </div>
     </section>
 
+    <!-- Blog -->
+    <section id="blog-section" style="display:none;">
+      <h2 class="section-heading" data-de="BLOG" data-en="BLOG" data-es="BLOG" data-pt="BLOG" data-fr="BLOG" data-ru="БЛОГ"></h2>
+      <p id="blog-latest-date" class="note" style="margin-bottom:0.6rem;"></p>
+      <p id="blog-latest-title" class="body-text" style="font-weight:700; color:var(--yellow);"></p>
+      <div id="blog-latest-body"></div>
+      <a class="book-link" href="blog.html" style="margin-top:1.4rem; display:inline-block;">
+        <span data-de="→ ALLE BEITRÄGE" data-en="→ ALL POSTS" data-es="→ TODAS LAS ENTRADAS" data-pt="→ TODOS OS ARTIGOS" data-fr="→ TOUS LES ARTICLES" data-ru="→ ВСЕ ЗАПИСИ"></span>
+      </a>
+    </section>
+
     <!-- Books -->
     <section>
       <h2 class="section-heading" data-de="BÜCHER" data-en="BOOKS" data-es="LIBROS" data-pt="LIVROS" data-fr="LIVRES" data-ru="КНИГИ"></h2>
@@ -461,6 +472,36 @@
 
   <script>
     const LANGS = ['de', 'en', 'es', 'pt', 'fr', 'ru'];
+    let blogPosts = [];
+    let currentLang = 'de';
+
+    function renderLatestPost(lang) {
+      const section = document.getElementById('blog-section');
+      if (!blogPosts.length) { section.style.display = 'none'; return; }
+      section.style.display = '';
+      const post = blogPosts[0];
+      const t = post.translations[lang] || post.translations['de'];
+      document.getElementById('blog-latest-date').textContent = post.date;
+      document.getElementById('blog-latest-title').textContent = t.title;
+      const bodyEl = document.getElementById('blog-latest-body');
+      bodyEl.innerHTML = '';
+      t.body.split(/\n\n+/).forEach(para => {
+        if (para.trim()) {
+          const p = document.createElement('p');
+          p.className = 'body-text';
+          p.textContent = para.trim();
+          bodyEl.appendChild(p);
+        }
+      });
+    }
+
+    async function loadBlog() {
+      try {
+        const res = await fetch('posts.json');
+        blogPosts = await res.json();
+        renderLatestPost(currentLang);
+      } catch(e) { /* no posts yet */ }
+    }
 
     const SPOTIFY_URLS = {
       de: 'https://open.spotify.com/show/4psTvnCyofQGobrBVnlsoS',
@@ -492,6 +533,7 @@
     }
 
     function setLang(lang) {
+      currentLang = lang;
       document.documentElement.lang = lang;
       document.querySelectorAll(LANGS.map(l => '[data-' + l + ']').join(',')).forEach(el => {
         const text = el.getAttribute('data-' + lang);
@@ -505,11 +547,13 @@
       LANGS.forEach(l => {
         document.getElementById('btn-' + l).classList.toggle('active', l === lang);
       });
+      renderLatestPost(lang);
       localStorage.setItem('gs-lang', lang);
     }
 
     const saved = localStorage.getItem('gs-lang') || 'de';
     setLang(saved);
+    loadBlog();
   </script>
 </body>
 </html>
