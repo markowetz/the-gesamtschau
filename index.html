@@ -343,7 +343,7 @@
         <a id="spotify-link" href="https://open.spotify.com/show/4psTvnCyofQGobrBVnlsoS" target="_blank" rel="noopener">
           <img src="icons/spotify.png" alt="" /> Spotify
         </a>
-        <a href="https://podcasts.apple.com/us/podcast/the-gesamtschau/id1804452911" target="_blank" rel="noopener">
+        <a id="apple-link" href="https://podcasts.apple.com/de/podcast/the-gesamtschau-deutsch/id1804452911" target="_blank" rel="noopener">
           <img src="icons/apple.svg" alt="" /> Apple Podcasts
         </a>
         <a id="rss-link" href="https://feeds.transistor.fm/the-gesamtschau" target="_blank" rel="noopener">
@@ -519,6 +519,15 @@
       ru: 'https://open.spotify.com/show/7A8h2FdB2EFjpqbUhOr96q',
     };
 
+    const APPLE_URLS = {
+      de: 'https://podcasts.apple.com/de/podcast/the-gesamtschau-deutsch/id1804452911',
+      en: 'https://podcasts.apple.com/de/podcast/the-gesamtschau-deutsch/id1804452911', // TODO: ID ausstehend
+      es: 'https://podcasts.apple.com/de/podcast/the-gesamtschau-espa%C3%B1ol/id1885224669',
+      pt: 'https://podcasts.apple.com/de/podcast/the-gesamtschau-deutsch/id1804452911', // TODO: ID ausstehend
+      fr: 'https://podcasts.apple.com/de/podcast/the-gesamtschau-deutsch/id1804452911', // TODO: ID ausstehend
+      ru: 'https://podcasts.apple.com/de/podcast/the-gesamtschau-%D1%80%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9/id1885224677',
+    };
+
     const RSS_FEEDS = {
       de: 'https://feeds.transistor.fm/the-gesamtschau',
       en: 'https://feeds.transistor.fm/the-gesamtschau-english',
@@ -551,6 +560,8 @@
       if (rssLink) rssLink.href = RSS_FEEDS[lang];
       const spotifyLink = document.getElementById('spotify-link');
       if (spotifyLink) spotifyLink.href = SPOTIFY_URLS[lang];
+      const appleLink = document.getElementById('apple-link');
+      if (appleLink) appleLink.href = APPLE_URLS[lang];
       LANGS.forEach(l => {
         document.getElementById('btn-' + l).classList.toggle('active', l === lang);
       });
