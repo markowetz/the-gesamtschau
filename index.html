@@ -209,10 +209,19 @@
       color: #000;
     }
 
-    /* Redbubble */
-    .redbubble-embed {
-      margin: 1.5rem 0 1rem;
-      border: 1px solid var(--border);
+    /* Shop image */
+    .shop-img-link {
+      display: block;
+      margin: 1.5rem 0 1.4rem;
+      max-width: 480px;
+      transition: opacity 0.15s;
+    }
+
+    .shop-img-link:hover { opacity: 0.85; }
+
+    .shop-img-link img {
+      display: block;
+      width: 100%;
     }
 
     .shop-link {
@@ -447,17 +456,11 @@
     <!-- Shop -->
     <section>
       <h2 class="section-heading" data-de="SHOP" data-en="SHOP" data-es="TIENDA" data-pt="LOJA" data-fr="BOUTIQUE" data-ru="МАГАЗИН"></h2>
-      <p class="body-text"
-         data-de="Merchandise zur Gesamtschau — Designs rund um digitale Transformation, Gesellschaft und Zukunft."
-         data-en="Gesamtschau merchandise — designs around digital transformation, society, and the future."
-         data-es="Merchandising de la Gesamtschau — diseños sobre transformación digital, sociedad y futuro."
-         data-pt="Merchandising da Gesamtschau — designs sobre transformação digital, sociedade e futuro."
-         data-fr="Merchandising de la Gesamtschau — designs autour de la transformation numérique, de la société et de l'avenir."
-         data-ru="Мерч Gesamtschau — дизайны о цифровой трансформации, обществе и будущем."></p>
-      <div class="redbubble-embed">
-        <script type="text/javascript" src="https://www.redbubble.com/assets/external_portfolio.js"></script>
-        <script id="rb-xzfcxvzx" type="text/javascript">new RBExternalPortfolio('www.redbubble.com', 'gesamtschau', 1, 3).renderIframe();</script>
-      </div>
+      <a class="shop-img-link"
+         href="https://www.redbubble.com/people/gesamtschau/shop"
+         target="_blank" rel="noopener">
+        <img src="shop.png" alt="The Gesamtschau – T-Shirt" />
+      </a>
       <a class="shop-link"
          href="https://www.redbubble.com/people/gesamtschau/shop"
          target="_blank" rel="noopener">
