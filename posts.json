@@ -1,1 +1,32 @@
-[]
+[
+  {
+    "id": "2026-03-24",
+    "date": "2026-03-24",
+    "translations": {
+      "de": {
+        "title": "Podcast und Bücher gehen online",
+        "body": "Der Gesamtschau Podcast und die beiden Bücher gehen in wenigen Tagen online."
+      },
+      "en": {
+        "title": "Podcast and books go online",
+        "body": "The Gesamtschau Podcast and both books will go online in a few days."
+      },
+      "es": {
+        "title": "Podcast y libros en línea",
+        "body": "El Podcast de la Gesamtschau y los dos libros estarán en línea en pocos días."
+      },
+      "pt": {
+        "title": "Podcast e livros ficam online",
+        "body": "O Podcast da Gesamtschau e os dois livros ficarão online em poucos dias."
+      },
+      "fr": {
+        "title": "Podcast et livres en ligne",
+        "body": "Le Podcast de la Gesamtschau et les deux livres seront en ligne dans quelques jours."
+      },
+      "ru": {
+        "title": "Подкаст и книги выходят онлайн",
+        "body": "Подкаст Gesamtschau и обе книги выйдут в сеть через несколько дней."
+      }
+    }
+  }
+]

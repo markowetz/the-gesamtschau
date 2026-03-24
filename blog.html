@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blog — The Gesamtschau</title>
+  <title>Ältere Nachrichten — The Gesamtschau</title>
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -173,7 +173,13 @@
     </div>
 
     <header>
-      <h1 id="blog-heading">BLOG</h1>
+      <h1 id="blog-heading"
+          data-de="ÄLTERE NACHRICHTEN"
+          data-en="OLDER NEWS"
+          data-es="NOTICIAS ANTERIORES"
+          data-pt="NOTÍCIAS ANTERIORES"
+          data-fr="ACTUALITÉS PRÉCÉDENTES"
+          data-ru="ПРЕДЫДУЩИЕ НОВОСТИ">ÄLTERE NACHRICHTEN</h1>
       <a class="back-link" href="index.html">
         <span data-de="← Zurück zur Startseite"
               data-en="← Back to home"
@@ -203,16 +209,18 @@
       const container = document.getElementById('posts-container');
       container.innerHTML = '';
 
-      if (!allPosts.length) {
+      const olderPosts = allPosts.slice(1);
+
+      if (!olderPosts.length) {
         const empty = document.createElement('div');
         empty.className = 'empty-state';
-        const msgs = { de: 'Noch keine Beiträge.', en: 'No posts yet.', es: 'Aún no hay entradas.', pt: 'Ainda sem artigos.', fr: 'Aucun article pour l\'instant.', ru: 'Пока нет записей.' };
+        const msgs = { de: 'Keine älteren Nachrichten.', en: 'No older news.', es: 'No hay noticias anteriores.', pt: 'Sem notícias anteriores.', fr: 'Aucune actualité précédente.', ru: 'Нет предыдущих новостей.' };
         empty.textContent = msgs[lang] || msgs.de;
         container.appendChild(empty);
         return;
       }
 
-      allPosts.forEach(post => {
+      olderPosts.forEach(post => {
         const t = post.translations[lang] || post.translations['de'];
         const entry = document.createElement('div');
         entry.className = 'post-entry';
