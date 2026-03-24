@@ -357,7 +357,7 @@
          data-pt="Alexander Markowetz, semanalmente."
          data-fr="Alexander Markowetz, hebdomadaire."
          data-ru="Александр Марковец, еженедельно."></p>
-      <div class="spotify-embed" id="podcast-player"
+      <div id="podcast-player" style="display:none"
            data-episode-de="331e3087"
            data-episode-en="3d70bf73"
            data-episode-es="f35fc7cd"
@@ -371,6 +371,7 @@
         <a id="apple-link" href="https://podcasts.apple.com/de/podcast/the-gesamtschau-deutsch/id1804452911" target="_blank" rel="noopener">
           <img src="icons/apple.svg" alt="" /> Apple Podcasts
         </a>
+        <a id="transistor-link" href="#" target="_blank" rel="noopener">Transistor</a>
         <a id="rss-link" href="https://feeds.transistor.fm/the-gesamtschau" target="_blank" rel="noopener">
           <img src="icons/rss.png" alt="" /> RSS
         </a>
@@ -562,17 +563,6 @@
       ru: 'https://feeds.transistor.fm/the-gesamtschau-russian',
     };
 
-    function updatePodcastPlayer(lang) {
-      const player = document.getElementById('podcast-player');
-      if (!player) return;
-      const epId = player.getAttribute('data-episode-' + lang);
-      if (epId) {
-        player.innerHTML = '<iframe src="https://share.transistor.fm/e/' + epId + '" width="100%" height="180" frameborder="0" scrolling="no" seamless="true" loading="lazy"></iframe>';
-      } else {
-        player.innerHTML = '';
-      }
-    }
-
     function setLang(lang) {
       currentLang = lang;
       document.documentElement.lang = lang;
@@ -580,13 +570,18 @@
         const text = el.getAttribute('data-' + lang);
         if (text !== null) el.textContent = text;
       });
-      updatePodcastPlayer(lang);
       const rssLink = document.getElementById('rss-link');
       if (rssLink) rssLink.href = RSS_FEEDS[lang];
       const spotifyLink = document.getElementById('spotify-link');
       if (spotifyLink) spotifyLink.href = SPOTIFY_URLS[lang];
       const appleLink = document.getElementById('apple-link');
       if (appleLink) appleLink.href = APPLE_URLS[lang];
+      const transistorLink = document.getElementById('transistor-link');
+      const player = document.getElementById('podcast-player');
+      if (transistorLink && player) {
+        const epId = player.getAttribute('data-episode-' + lang);
+        if (epId) transistorLink.href = 'https://share.transistor.fm/e/' + epId;
+      }
       LANGS.forEach(l => {
         document.getElementById('btn-' + l).classList.toggle('active', l === lang);
       });
