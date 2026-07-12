@@ -32,3 +32,18 @@ jobs:
             git commit -m "Update podcast episode IDs [skip ci]" &&
             git push
           )
+
+      - name: Keepalive (prevent scheduled-workflow auto-disable)
+        if: github.event_name == 'schedule'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          age_days=$(( ( $(date +%s) - $(git log -1 --format=%ct) ) / 86400 ))
+          echo "Last commit is $age_days days old."
+          if [ "$age_days" -ge 50 ]; then
+            echo "Approaching the 60-day inactivity limit — pushing a keepalive commit."
+            git commit --allow-empty -m "Keepalive: keep scheduled workflow enabled [skip ci]"
+            git push
+          else
+            echo "Repo active enough — no keepalive needed."
+          fi
